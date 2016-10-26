@@ -11,18 +11,19 @@ import input_layer
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
+base_path = os.path.dirname(__file__)
 
 
 
 def writeToTemp(s):
-    f_t = open('out_temp.txt','a')
+    fil_path = base_path + "/temp/out_temp.txt"
+    f_t = open(base_path,'a')
     f_t.write(s+"\n")
     f_t.close()
 
 def run_network(jsn_file):
-
-    open('out_temp.txt', 'w').close()
-
+    fil_path = base_path + "/temp/out_temp.txt"
+    open(fil_path, 'w').close()
     with open(jsn_file,'r') as f:
         options = json.load(f)
 

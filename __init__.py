@@ -15,8 +15,8 @@ import inertial_flow
 app = Flask(__name__)
 
 # This is the path to the upload directory
-app.config['DATA_UPLOAD_FOLDER'] = 'data'
-app.config['JSON_UPLOAD_FOLDER'] = 'JSON'
+app.config['DATA_UPLOAD_FOLDER'] = '/data'
+app.config['JSON_UPLOAD_FOLDER'] = '/JSON'
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'csv','json'])
 
@@ -77,7 +77,8 @@ def r_net_post():
     data = json.loads(request.data.decode())
     json_file = data["file"]
     # start job
-    open('out_temp.txt', 'w').close()       #clear inter comm file
+    fil_path = base_path + "/temp/out_temp.txt"
+    open(fil_path, 'w').close()       #clear inter comm file
     job = q.enqueue_call(
         func="app.run_network", args=(json_file,), result_ttl=5000
     )
