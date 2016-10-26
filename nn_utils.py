@@ -72,4 +72,4 @@ def random_seed_np_tf(seed):
         tf.set_random_seed(seed)
         return True
     else:
-return False
+    return False
