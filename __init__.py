@@ -41,7 +41,7 @@ def run_network(f):
 def r_p_getData_Files():
     print "Getting filesss"
    # path = os.getcwd() + "/data"
-    path = base_path + "data"
+    path = base_path + "/data"
     dirs = os.listdir( path )
     results = {}
     i = 0
@@ -56,7 +56,8 @@ def r_p_getData_Files():
 @app.route('/api/getJSONFiles',methods=['POST'])
 def r_p_get_JSON_Files():
     print "Getting filesss"
-    path = os.getcwd() + "/JSON"
+    #path = os.getcwd() + "/JSON"
+    path = base_path + "/JSON"
     dirs = os.listdir( path )
     results = {}
     i = 0
