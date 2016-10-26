@@ -15,8 +15,8 @@ import inertial_flow
 app = Flask(__name__)
 
 # This is the path to the upload directory
-app.config['DATA_UPLOAD_FOLDER'] = 'data/'
-app.config['JSON_UPLOAD_FOLDER'] = 'JSON/'
+app.config['DATA_UPLOAD_FOLDER'] = 'data'
+app.config['JSON_UPLOAD_FOLDER'] = 'JSON'
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'csv','json'])
 
