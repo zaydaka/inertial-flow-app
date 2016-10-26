@@ -1,0 +1,43 @@
+<h1>Inertial Flow: Upload JSON File </h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<br>
+
+<div class="container-fluid text-left" ng-controller="UploadJsonController" ng-init="getJSONFiles()">
+ <div class="row">
+	<hr/>
+    <div>
+    	<form  role="form" enctype="multipart/form-data">
+      		<div class="form-group">
+        		<input type="file"  file-model="myFile" style="max-width: 300px;" required><br />
+        		<button ng-click="uploadJSONFile()" class="btn btn-primary">Upload</button>
+        	</div>
+      	</form>
+    </div>
+    <div id="chart"></div>
+      	<div class="well" ng-show='fileError'>
+            <div class="alert alert-danger" role="alert" >
+            	<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <span>There was an error submitting your file.<br>Please check to make sure it is valid before trying again.</span>
+            </div>
+        </div>
+    </div>
+	<div class = "row">
+    	<h3>Current JSON Files</h3>
+		<table class="table table-striped">
+      		<thead>
+        		<tr>
+        			<th style="max-width: 20px;">Order</th>
+          			<th>File Name</th> 
+       			</tr>
+      		</thead>
+      		<tbody>
+        		<tr ng-repeat="(key, val) in filelist">
+          			<td>{{key}}</td>
+         			<td>{{val}}</td>
+        		</tr>
+      		</tbody>
+    	</table>
+	</div>
+</div>
+    

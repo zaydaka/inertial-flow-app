@@ -1,0 +1,44 @@
+{
+  "name": "testNetwork",
+  "dir": "/testNetwork",
+  "verbose": "on",
+  "data":
+  {
+    "training_data":
+    [
+      {
+        "file_name": "data/TorpedoFlatten.txt"
+      },
+      {
+        "file_name": "data/TorpedoFlatten.txt"
+      }
+    ],
+    "validation_data":
+    [
+      {
+        "file_name": "data/TorpedoFlatten.txt"
+      }
+    ],
+    "testing_data":
+    [
+      {
+        "file_name": "data/TorpedoFlatten.txt"
+      }
+    ]
+  },
+  "layers":
+  [
+    {
+      "layer_name": "autoencoder_1",
+      "layer_order": 0,
+      "layer_type": "autoencoder",
+      "hidden_size": 50,
+      "activation": "tanh",
+      "pre_train": "true",
+      "tied_weights": "true",
+      "pre_train_cost": "MSE",
+      "pre_train_optimizer": "Adam",
+      "pre_train_learning_rate": 0.001
+    }
+  ]
+}

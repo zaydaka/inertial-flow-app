@@ -1,0 +1,70 @@
+{
+  "name": "iris",
+  "dir": "irisNetwork",
+  "verbose": "on",
+  "data":
+  {
+    "training_data":
+    [
+      {
+        "file_name": "data/iris_data_training.txt"
+      }
+    ],
+    "testing_data":
+    [
+      {
+        "file_name": "data/iris_data_testing.txt"
+      }
+    ]
+  },
+  "layers":
+  [
+    {
+      "layer_name": "input_layer1",
+      "layer_order": 0,
+      "layer_type": "input"
+    },
+    {
+      "layer_name": "autoencoder_1",
+      "layer_order": 1,
+      "layer_type": "autoencoder",
+      "hidden_size": 3,
+      "activation": "tanh",
+      "pre_train": true,
+      "tied_weights": true,
+      "pre_train_cost": "MSE",
+      "pre_train_optimizer": "Adam",
+      "pre_train_learning_rate": 0.001,
+      "pre_train_rounds": 500,
+      "pre_train_batch_size": 20
+    },
+    {
+      "layer_name": "autoencoder_2",
+      "layer_order": 2,
+      "layer_type": "autoencoder",
+      "hidden_size": 3,
+      "activation": "tanh",
+      "pre_train": true,
+      "tied_weights": true,
+      "pre_train_cost": "MSE",
+      "pre_train_optimizer": "Adam",
+      "pre_train_learning_rate": 0.001,
+      "pre_train_rounds": 500,
+      "pre_train_batch_size": 20
+    },
+    {
+      "layer_name": "autoencoder_3",
+      "layer_order": 3,
+      "layer_type": "autoencoder",
+      "hidden_size": 3,
+      "activation": "tanh",
+      "pre_train": true,
+      "tied_weights": true,
+      "pre_train_cost": "MSE",
+      "pre_train_optimizer": "Adam",
+      "pre_train_learning_rate": 0.001,
+      "pre_train_rounds": 500,
+      "pre_train_batch_size": 20
+    }
+  ]
+}
