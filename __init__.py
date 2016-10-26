@@ -20,6 +20,8 @@ app.config['JSON_UPLOAD_FOLDER'] = 'JSON'
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'csv','json'])
 
+base_path = os.path.dirname(__file__)
+
 # For a given file, return whether it's an allowed type or not
 def allowed_file(filename):
     return '.' in filename and \
@@ -38,7 +40,8 @@ def run_network(f):
 @app.route('/api/getDataFiles',methods=['POST'])
 def r_p_getData_Files():
     print "Getting filesss"
-    path = os.getcwd() + "/data"
+   # path = os.getcwd() + "/data"
+    path = base_path + "data"
     dirs = os.listdir( path )
     results = {}
     i = 0
