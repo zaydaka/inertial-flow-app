@@ -140,7 +140,7 @@ def uploadjson():
 def get_results(job_key):
 
     job = Job.fetch(job_key, connection=conn)
-
+    fil_path = base_path + "/temp/out_temp.txt"
     if job.is_finished:
         print "Job Finished"
 
@@ -156,7 +156,7 @@ def get_results(job_key):
     else:
         d = {}
         i = -1
-        file = open('out_temp.txt', 'r')
+        file = open(fil_path, 'r')
         for lin in file.readlines():
             i = i + 1
             d[i] = lin
