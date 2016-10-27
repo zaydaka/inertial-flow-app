@@ -17,7 +17,7 @@ base_path = os.path.dirname(__file__)
 
 def writeToTemp(s):
     fil_path = base_path + "/temp/out_temp.txt"
-    f_t = open(base_path,'a')
+    f_t = open(fil_path,'a')
     f_t.write(s+"\n")
     f_t.close()
 
