@@ -22,11 +22,14 @@ def writeToTemp(s):
     f_t.close()
 
 def run_network(jsn_file):
+
     fil_path = base_path + "/temp/out_temp.txt"
+    print "filPath = ",fil_path
     open(fil_path, 'w').close()
     with open(jsn_file,'r') as f:
         options = json.load(f)
 
+    print "just loaded options"
     
 
 # Create a working directory
