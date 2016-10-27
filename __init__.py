@@ -80,7 +80,7 @@ def r_net_post():
     fil_path = base_path + "/temp/out_temp.txt"
     open(fil_path, 'w').close()       #clear inter comm file
     job = q.enqueue_call(
-        func="app.run_network", args=(json_file,), result_ttl=5000
+        func="__init__.run_network", args=(json_file,), result_ttl=5000
     )
     # return created job id
     return job.get_id()
