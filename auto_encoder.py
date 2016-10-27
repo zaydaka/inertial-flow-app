@@ -74,12 +74,12 @@ class AutoEncoder:
             if self.verbose == "FULL":
                 index = np.random.randint(train_set.shape[0],size=1)
                 example_x = train_set[index][:]
-                plt.figure()
-                plt.plot(range(train_set.shape[1]),np.transpose(example_x))
-                plt.plot(range(train_set.shape[1]),np.transpose(self.tf_session.run(self.pre_train_decode, feed_dict={self._input_data: example_x})))
-                plt.title("Pre-trained Layer: "+self.name+" Example")
-                plt.grid()
-                plt.draw()
+                #plt.figure()
+                #plt.plot(range(train_set.shape[1]),np.transpose(example_x))
+                #plt.plot(range(train_set.shape[1]),np.transpose(self.tf_session.run(self.pre_train_decode, feed_dict={self._input_data: example_x})))
+                #plt.title("Pre-trained Layer: "+self.name+" Example")
+                #plt.grid()
+                #plt.draw()
 
     def _run_pre_train_step(self, train_set):
         n_samp, n_input = train_set.shape
