@@ -147,7 +147,7 @@ def get_results(job_key):
         #result = job.result
         d = {}
         i = -1
-        file = open('out_temp.txt', 'r')
+        file = open(fil_path, 'r')
         for lin in file.readlines():
             i = i + 1
             d[i] = lin
