@@ -100,7 +100,8 @@ def uploaddata():
         filename = secure_filename(file.filename)
         # Move the file form the temporal folder to
         # the upload folder we setup
-        file.save(os.path.join(app.config['DATA_UPLOAD_FOLDER'], filename))
+        fil_path = base_path + "/data/" + filename
+        file.save(fil_path)
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
     #    return redirect(url_for('uploaded_file',
@@ -120,7 +121,10 @@ def uploadjson():
         filename = secure_filename(file.filename)
         # Move the file form the temporal folder to
         # the upload folder we setup
-        file.save(os.path.join(app.config['JSON_UPLOAD_FOLDER'], filename))
+        fil_path = base_path + "/JSON/" + filename
+        file.save(fil_path)
+
+        #file.save(os.path.join(app.config['JSON_UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
     #    return redirect(url_for('uploaded_file',
