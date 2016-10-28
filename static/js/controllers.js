@@ -146,6 +146,7 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
       // get the JSON file 
       //$scope.checked_json_files = null
       $scope.json_files = null
+      $scope.checked_json_files = []
       //$scope.user.json_files = null
       $log.log("in run of getting files")
 
@@ -153,12 +154,12 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
       $http.post('/api/getJSONFiles').
         success(function(results) {
           $log.log(results);
-          $scope.json_files = []
-          for(var i = 0, size = results.length; i < size ; i++){
-            $scope.json_files.push({file_name:results[i],checked:false})
-          }
+          //$scope.json_files = []
+          //for(var i = 0, size = results.length; i < size ; i++){
+          //  $scope.json_files.push({file_name:results[i],checked:false})
+          //}
 
-          //$scope.json_files = results
+          $scope.json_files = results
           //getNetworkResults(results); 
         }).
         error(function(error) {
@@ -175,7 +176,7 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
   $scope.runNetwork = function() {
       // get the JSON file 
       //$log.log($scope.user.json_files)
-      $log.log($scope.json_files)
+      $log.log($scope.checked_json_files)
       var userInput = $scope.file;
       $log.log("in run of RunNetworkController")
       $log.log(userInput)
