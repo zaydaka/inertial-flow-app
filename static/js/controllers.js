@@ -172,7 +172,7 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
   $scope.runNetwork = function() {
       // get the JSON file 
       //$log.log($scope.user.json_files)
-      $log.log($scope.checked_json_files)
+      $log.log($scope.json_files)
       var userInput = $scope.file;
       $log.log("in run of RunNetworkController")
       $log.log(userInput)
