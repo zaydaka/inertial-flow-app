@@ -140,7 +140,7 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
 
   $scope.getJSONFiles = function() {
       // get the JSON file 
-      $scope.checked_json_files = null
+      //$scope.checked_json_files = null
       $scope.json_files = null
       //$scope.user.json_files = null
       $log.log("in run of getting files")

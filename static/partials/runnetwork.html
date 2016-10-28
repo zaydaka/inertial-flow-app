@@ -47,7 +47,24 @@
     <br>
   </div>
             
-  
+  <div  class="row" id="results" style="overflow-y:scroll;">
+  <hr>
+  <h3>Consol Log</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th style="max-width: 20px;">ID</th>
+          <th>Message</th> 
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(key, val) in runresults">
+          <td>{{key}}</td>
+          <td>{{val}}</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
   
   </div>
 </div> 
