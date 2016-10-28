@@ -151,7 +151,7 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
           $log.log(results);
           $scope.json_files = []
           for(var i = 0, size = results.length; i < size ; i++){
-            $scope.json_files.push({id:i,file_name:results[i],checked:false})
+            $scope.json_files.push({file_name:results[i],checked:false})
    
           }
 
