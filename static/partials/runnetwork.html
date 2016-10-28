@@ -35,7 +35,7 @@
       <tbody>
         <tr ng-repeat="json in json_files">
           <td>
-            <input type="checkbox" value="{{json.name}}" ng-model="json.checked">
+            <input type="checkbox" value="{{json.name}}" ng-model="json.checked" name="selectedJSONFiles[]">
             <!--<input type="checkbox" checklist-model="checked_json_files" checklist-value="json"> {{json}}-->
           </td>
         </tr>

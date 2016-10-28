@@ -135,6 +135,10 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
   $scope.loading = false;
   $scope.urlerror = false;
 
+  // helper method to get selected fruits
+  $scope.selectedFruits = function selectedJSONFiles() {
+    return filterFilter($scope.json_files, { checked: true });
+  };
 
 
 
@@ -152,7 +156,6 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
           $scope.json_files = []
           for(var i = 0, size = results.length; i < size ; i++){
             $scope.json_files.push({file_name:results[i],checked:false})
-   
           }
 
           //$scope.json_files = results
