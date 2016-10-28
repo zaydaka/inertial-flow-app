@@ -177,11 +177,13 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
       // get the JSON file 
       //$log.log($scope.user.json_files)
       $log.log($scope.checked_json_files)
-      var userInput = $scope.file;
-      $log.log("in run of RunNetworkController")
-      $log.log(userInput)
+      //var userInput = $scope.file;
+      //$log.log("in run of RunNetworkController")
+      //$log.log(userInput)
       // fire the API request
       for(var i=0; i < $scope.checked_json_files; i++){
+        $log.log("running network:")
+        $log.log($scope.checked_json_files[i])
         $http.post('/api/runnetwork', {"file": $scope.checked_json_files[i]}).
         success(function(results) {
           $log.log(results);
@@ -214,7 +216,7 @@ function getNetworkResults(jobID) {
         $http.get('/results/'+jobID).
           success(function(data, status, headers, config) {
             if(status === 202) {
-              $log.log(data, status);
+              $log.log(status);
               $scope.runresults = data;
             } else if (status === 200){
               $log.log("finished!!")
