@@ -181,7 +181,8 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
       $log.log("in run of RunNetworkController")
       $log.log(userInput)
       // fire the API request
-      $http.post('/api/runnetwork', {"file": userInput}).
+      for(var i=0; i < $scope.checked_json_files; i++){
+        $http.post('/api/runnetwork', {"file": $scope.checked_json_files[i]}).
         success(function(results) {
           $log.log(results);
           getNetworkResults(results);
@@ -193,6 +194,8 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
           $log.log("there is an error :(")
           $log.log(error);
         });
+      }
+      
 
   };
 
