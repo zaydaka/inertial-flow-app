@@ -1,8 +1,4 @@
 sep='--------'
-echo $sep"Checking status of repo."$sep
-git status
-echo $sep"Pulling for changes."$sep
-git pull
 echo $sep"Moving app files to server location"$sep
 sudo cp -r /var/www/app/app/inertial-flow-app/* /var/www/app/app
 echo $sep"Reloading apache server"$sep

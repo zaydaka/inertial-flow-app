@@ -128,15 +128,43 @@ flowControllers.controller('UploadJsonController', ['$scope', '$location', '$htt
 //// Controller for running a network ////
 ////////////////////////////////
 
-flowControllers.controller('RunNetworkController', ['$scope', '$location', '$http', '$log', '$timeout', function($scope, $location, $http, $log, $timeout) {
+flowControllers.controller('RunNetworkController', ['$scope', '$location', '$http', '$log', '$timeout',
+ function($scope, $location, $http, $log, $timeout) {
 
   $scope.submitButtonText = 'Submit';
   $scope.loading = false;
   $scope.urlerror = false;
 
+
+
+
+  $scope.getJSONFiles = function() {
+      // get the JSON file 
+      $scope.json_files = null
+      //$scope.user.json_files = null
+      $log.log("in run of getting files")
+
+      // fire the API request
+      $http.post('/api/getJSONFiles').
+        success(function(results) {
+          $log.log(results);
+          $scope.json_files = results
+          //getNetworkResults(results); 
+        }).
+        error(function(error) {
+          $log.log("there is an error :(")
+          $log.log(error);
+        });
+
+  };
+
+
+
+
   // Function to run the network
   $scope.runNetwork = function() {
       // get the JSON file 
+      //$log.log($scope.user.json_files)
       var userInput = $scope.file;
       $log.log("in run of RunNetworkController")
       $log.log(userInput)
@@ -158,9 +186,13 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
 
 
 
+
+
+
 function getNetworkResults(jobID) {
 
       var timeout = "";
+
 
       var poller = function() {
         // fire another request

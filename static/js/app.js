@@ -2,7 +2,7 @@
 'use strict';
 
 var InertialFlowApp = angular.module('InertialFlowApp', [
-  'ngRoute','flowControllers', 'flowDirectives', 'flowServices',
+  'ngRoute','flowControllers', 'flowDirectives', 'flowServices', 'checklist-model',
 ]);
 
 
