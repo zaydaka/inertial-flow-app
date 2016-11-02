@@ -11,7 +11,6 @@ from werkzeug.utils import secure_filename
 import inertial_flow
 
 
-
 app = Flask(__name__)
 
 # This is the path to the upload directory
