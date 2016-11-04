@@ -12,12 +12,12 @@ class BaseConfig(object):
 
 
     # Flask-Mail settings
-    MAIL_USERNAME =           os.getenv('MAIL_USERNAME',        'icarusboxes@gmail.com')
-    MAIL_PASSWORD =           os.getenv('MAIL_PASSWORD',        'IBox12Yum')
-    MAIL_DEFAULT_SENDER =     os.getenv('MAIL_DEFAULT_SENDER',  '"NoReply" <icarusboxes@gmail.com>')
+    MAIL_USERNAME =           os.getenv('MAIL_USERNAME',        'worker@inertialflow.com')
+    MAIL_PASSWORD =           os.getenv('MAIL_PASSWORD',        'InertAmerica1')
+    MAIL_DEFAULT_SENDER =     os.getenv('MAIL_DEFAULT_SENDER',  '"NoReply" <worker@inertialflow.com>')
     MAIL_SERVER =             os.getenv('MAIL_SERVER',          'smtp.gmail.com')
     MAIL_PORT =           int(os.getenv('MAIL_PORT',            '465'))
     MAIL_USE_SSL =        int(os.getenv('MAIL_USE_SSL',         True))
 
     # Flask-User settings
-    USER_APP_NAME        = "AppName"                # Used by email templates
+    USER_APP_NAME        = "InertialFlow"                # Used by email templates
