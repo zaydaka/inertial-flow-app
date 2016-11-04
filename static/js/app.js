@@ -57,25 +57,27 @@ InertialFlowApp.run(function ($rootScope, $location, $route, $log, AuthService) 
     function (event, next, current) {
       AuthService.getUserStatus()
       .then(function(){
-        $log.log("checking auth")
-        $log.log(next)
+
+        if(AuthService.isLoggedIn()){
+          $rootScope.example="Logout";
+        }else{$rootScope.example="Login";}
+
         if (next.access.restricted && !AuthService.isLoggedIn()){
           $location.path('/login');
-          $rootScope.example="Login"
           $route.reload();
         }else{
           if(next.loadedTemplateUrl=="../static/partials/login.html"){
-            $log.log("User is trying to logout");
-            // call logout from service
             AuthService.logout()
               .then(function () {
                 $rootScope.example="Login"
               $location.path('/login');
-            });
-            
+            }); 
           }
-          $rootScope.example="Logout"
         }
+
+
+
+
       });
   });
 });
