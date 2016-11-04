@@ -94,9 +94,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         token = reg_email.generate_confirmation_token(user.email)
-    
         confirm_url = url_for('confirm_email', token=token, _external=True)
-
         html = render_template('user/activate.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
         reg_email.send_email(user.email, subject, html)
