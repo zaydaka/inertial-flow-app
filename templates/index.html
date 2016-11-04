@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="InertialFlowApp">
+<html ng-app="InertialFlowApp" >
   <head>
     <title>Run Network</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,6 +58,7 @@
     <script src="/static/js/controllers.js" type="text/javascript"></script>
     <script src="/static/js/directives.js" type="text/javascript"></script>
     <script src="/static/js/services.js" type="text/javascript"></script>
+    <script src="/static/js/factorys.js" type="text/javascript"></script>
     
     <body>
       <nav class="navbar navbar-inverse">
@@ -74,11 +75,11 @@
             <ul class="nav navbar-nav">
               <li class="active"><a href="/#/home">Home</a></li>
               <li><a href="/#/about">About</a></li>
-              <li><a href="#">Projects</a></li>
-              <li><a href="#">Contact</a></li>
+              <li><a href="#/projects">Projects</a></li>
+              <li><a href="#/contact">Contact</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              <li><a ng-href="/#/login" ng-bind="example"><span class="glyphicon glyphicon-log-in"></span></a></li>
             </ul>
           </div>
         </div>
@@ -103,9 +104,10 @@
           <div class="col-sm-2 sidenav text-left" >
             <div class="well">
               <p>Notes:</p>
+              
             </div>
             <div class="well">
-              <div class="alert alert-danger" role="alert" ng-show='flases'>
+              <div class="alert alert-danger" role="alert" ng-show='loading'>
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only">Error:</span>
                 <span>There was an error submitting your file.<br>Please check to make sure it is valid before trying again.</span>

@@ -6,12 +6,28 @@ import json
 from rq import Queue
 from rq.job import Job
 from worker import conn
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify,session,url_for
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.login import LoginManager
 from werkzeug.utils import secure_filename
 import inertial_flow
+from flask.ext.bcrypt import Bcrypt
+from flask_mail import Mail
+from flask_login import login_user, logout_user, login_required, current_user
+from itsdangerous import URLSafeTimedSerializer
 
-
+from config import BaseConfig
+from flask.ext.mail import Message
 app = Flask(__name__)
+app.config.from_object(BaseConfig)
+bcrypt = Bcrypt(app)
+db = SQLAlchemy(app)
+mail = Mail(app)
+
+from models import *
+
+import reg_email
+
 
 # This is the path to the upload directory
 app.config['DATA_UPLOAD_FOLDER'] = '/data'
@@ -20,6 +36,14 @@ app.config['JSON_UPLOAD_FOLDER'] = '/JSON'
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'csv','json'])
 
 base_path = os.path.dirname(__file__)
+
+
+
+
+
+
+
+
 
 # For a given file, return whether it's an allowed type or not
 def allowed_file(filename):
@@ -36,6 +60,81 @@ def run_network(f):
     return result
 
 
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = reg_email.confirm_token(token)
+    except:
+    #flash('The confirmation link is invalid or has expired.', 'danger')
+        print "the link has expired"
+
+    user = User.query.filter_by(email=email).first_or_404()
+    if user.confirmed:
+        #flash('Account already confirmed. Please login.', 'success')
+        print "Accoutn alreayd confirmed"
+    else:
+        user.confirmed = True
+        user.confirmed_on = datetime.datetime.now()
+        db.session.add(user)
+        db.session.commit()
+        print "You have confirmed your accoutn ! thanks"
+        #flash('You have confirmed your account. Thanks!', 'success')
+    return render_template('index.html')
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    print "Adding user"
+    json_data = request.json
+    user = User(
+        email=json_data['email'],
+        password=json_data['password'],
+    confirmed=False
+    )
+    try:
+        db.session.add(user)
+        db.session.commit()
+        token = reg_email.generate_confirmation_token(user.email)
+    
+        confirm_url = url_for('confirm_email', token=token, _external=True)
+
+        html = render_template('user/activate.html', confirm_url=confirm_url)
+        subject = "Please confirm your email"
+        reg_email.send_email(user.email, subject, html)
+        print "email sent i think!"
+        status = 'success'
+    except:
+        print "There was an error"
+        status = 'this user is already registered'
+
+    db.session.close()
+    return jsonify({'result': status})
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    json_data = request.json
+    user = User.query.filter_by(email=json_data['email']).first()
+    if user and bcrypt.check_password_hash(
+            user.password, json_data['password']):
+        session['logged_in'] = True
+        status = True
+    else:
+        status = False
+    return jsonify({'result': status})
+
+@app.route('/api/logout')
+def logout():
+    session.pop('logged_in', None)
+    return jsonify({'result': 'success'})
+
+
+@app.route('/api/status')
+def status():
+    if session.get('logged_in'):
+        if session['logged_in']:
+            return jsonify({'status': True})
+    else:
+        return jsonify({'status': False})
+        
 @app.route('/api/getDataFiles',methods=['POST'])
 def r_p_getData_Files():
     print "Getting filesss"
@@ -164,4 +263,4 @@ def get_results(job_key):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
