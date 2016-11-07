@@ -91,8 +91,10 @@ def register():
     confirmed=False
     )
     try:
+        print "About to commit to DB"
         db.session.add(user)
         db.session.commit()
+        print "Just commited"
         token = reg_email.generate_confirmation_token(user.email)
         confirm_url = url_for('confirm_email', token=token, _external=True)
         html = render_template('user/activate.html', confirm_url=confirm_url)
@@ -101,6 +103,7 @@ def register():
         print "email sent i think!"
         status = 'success'
         #creat the directory
+        print "About to create a path dir"
         path = base_path + "/data/User/" + user.email.replace("@","_")
         if not ox.path.exists(path):
             os.makedirs(path)
