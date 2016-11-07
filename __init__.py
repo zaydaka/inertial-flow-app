@@ -168,7 +168,7 @@ def r_p_getData_Files():
 
     return jsonify(results)
 
-@app.rout('/api/getProjects',methods=['GET'])
+@app.route('/api/getProjects',methods=['GET'])
 def getProjects():
     print "Geting a list of porjects for user"
     results = {}
