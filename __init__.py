@@ -219,7 +219,7 @@ def r_net_post():
 def index():
     return render_template('index.html')
 
-@app.route('api/uploaddata', methods=['POST'])
+@app.route('/api/uploaddata', methods=['POST'])
 def uploaddata():
     if isLoggedIn():
     # Get the name of the uploaded file
@@ -239,7 +239,7 @@ def uploaddata():
             return "-1"
     return render_template('index.html')
 
-@app.route('/uploadjson', methods=['POST'])
+@app.route('/api/uploadjson', methods=['POST'])
 def uploadjson():
     # Get the name of the uploaded file
     file = request.files['file']
