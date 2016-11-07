@@ -45,9 +45,9 @@ def run_network(jsn_file):
             ##print "Loading training set ", training_file['file_name']
             writeToTemp("Loading training set " + training_file['file_name'])
             if 'trX' in locals():
-                trX, trRef = nn_utils.extract_data(training_file['file_name'], trX, trRef, input_size=3)
+                trX, trRef = nn_utils.extract_data(training_file['file_name'], trX, trRef, input_size=2)
             else:
-                trX, trRef = nn_utils.extract_data(training_file['file_name'], input_size=3)
+                trX, trRef = nn_utils.extract_data(training_file['file_name'], input_size=2)
     if 'validation_data' in options['data']:
         for validation_file in options['data']['validation_data']:
             ##print "Loading validation set ", validation_file['file_name']
@@ -69,35 +69,37 @@ def run_network(jsn_file):
     n_samp, input_size = teX.shape
     net_layers = []
     layerNumber = -1
-    ##print "Stacking layers..."
+    print "Stacking layers..."
     writeToTemp("Stacking layers...")
     for layer in options['layers']:
         layerNumber = layerNumber + 1
         if layer['layer_type'] == "input":
-            ##print "Adding input layer ", layer['layer_name']
+            print "Adding input layer ", layer['layer_name']
             writeToTemp("adding input layer " + layer['layer_name'])
             net_layers.append(input_layer.InputLayer(layer['layer_name'],layer['layer_order'],input_size,False))
-            ##print "Building graph for ", layer['layer_name']
+            print "Building graph for ", layer['layer_name']
             writeToTemp("Building graph for " + layer['layer_name'])
             net_layers[layerNumber].build_model()
         elif layer['layer_type'] == "autoencoder":
-            ##print "Adding autoencoder layer ", layer['layer_name']
+            print "Adding autoencoder layer ", layer['layer_name']
             writeToTemp("Adding autoencoder layer " + layer['layer_name'])
             net_layers.append(auto_encoder.AutoEncoder(layer['layer_name'], layer['layer_order'], layer['hidden_size'], layer['activation'], options['dir'],net_layers[layerNumber-1].encode,  layer['pre_train'], layer['tied_weights'], "FULL", 
             layer['pre_train_rounds'], layer['pre_train_batch_size'], layer['pre_train_cost'],layer['pre_train_optimizer'],layer['pre_train_learning_rate']))
             writeToTemp("Building graph for " + layer['layer_name'])
-            ##print "Building graph for ", layer['layer_name']
+            print "Building graph for ", layer['layer_name']
             net_layers[layerNumber].build_model(net_layers[layerNumber-1].hidden_size)
         else:
-            ##print "Adding fully connected layer ", layer['layer_name']
+            print "Adding fully connected layer ", layer['layer_name']
             writeToTemp("Adding fully connected layer " + layer['layer_name'])
             net_layers.append(auto_encoder.AutoEncoder(layer['layer_name'], layer['layer_order'], layer['hidden_size'], layer['activation'], options['dir'],net_layers[layerNumber-1].encode))
-            ##print "Building graph for ", layer['layer_name']
+            print "Building graph for ", layer['layer_name']
             writeToTemp("Building graph for " + layer['layer_name'])
             net_layers[layerNumber].build_model(net_layers[layerNumber-1].hidden_size)
 
 # Setup overall network to train
     if 'trX' in locals() and 'trRef' in locals():
+        print "trRef.shpe=",trRef.shape
+        print "outsize=",net_layers[len(net_layers)-1].hidden_size
         assert (net_layers[len(net_layers)-1].hidden_size == trRef.shape[1]), "Your final layer hidden size should be equal to your labels size!" 
         writeToTemp("Building full network training model...")
         y_ = tf.placeholder(tf.float32, [None, trRef.shape[1]])  #holds the truth data

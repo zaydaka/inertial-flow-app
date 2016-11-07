@@ -100,6 +100,20 @@ def register():
         reg_email.send_email(user.email, subject, html)
         print "email sent i think!"
         status = 'success'
+        #creat the directory
+        path = base_path + "/data/User/" + user.email.replace("@","_")
+        if not ox.path.exists(path):
+            os.makedirs(path)
+            print "Made User path"
+        path = base_path + "/data/User/" + user.email.replace("@","_") + "/Projects"
+        if not ox.path.exists(path):
+            os.makedirs(path)
+            print "Made Projects path"
+        path = base_path + "/data/User/" + user.email.replace("@","_") + "/Data"
+        if not ox.path.exists(path):
+            os.makedirs(path)
+            print "Made data path"
+
     except:
         print "There was an error"
         status = 'this user is already registered'
@@ -111,9 +125,9 @@ def register():
 def login():
     json_data = request.json
     user = User.query.filter_by(email=json_data['email']).first()
-    if user and bcrypt.check_password_hash(
-            user.password, json_data['password']):
+    if user and bcrypt.check_password_hash(user.password, json_data['password']):
         session['logged_in'] = True
+        session['username'] = user.email.replace("@","_");
         status = True
     else:
         status = False
@@ -127,43 +141,63 @@ def logout():
 
 @app.route('/api/status')
 def status():
+    status = isLoggedIn()
+    return jsonify({'status': status}) 
+
+def isLoggedIn():
     if session.get('logged_in'):
         if session['logged_in']:
-            return jsonify({'status': True})
-    else:
-        return jsonify({'status': False})
-        
+            return True
+
+    return False
+
 @app.route('/api/getDataFiles',methods=['POST'])
 def r_p_getData_Files():
     print "Getting filesss"
-   # path = os.getcwd() + "/data"
-    path = base_path + "/data"
-    dirs = os.listdir( path )
+    # path = os.getcwd() + "/data"
     results = {}
-    i = 0
-    # This would print all the files and directories
-    for file in dirs:
-        i = i + 1
-        results[i] = file
-        print file
+    if isLoggedIn():
+        path = base_path + "/data/User/" + session['username'] + "/Data"
+        dirs = os.listdir( path )
+        i = 0
+        # This would print all the files and directories
+        for file in dirs:           #simplify to results = file in dirs
+            i = i + 1
+            results[i] = file
+            print file
 
     return jsonify(results)
 
-@app.route('/api/getJSONFiles',methods=['POST'])
-def r_p_get_JSON_Files():
-    print "Getting filesss"
-    #path = os.getcwd() + "/JSON"
-    path = base_path + "/JSON"
-    dirs = os.listdir( path )
+@app.rout('/api/getProjects',methods=['GET'])
+def getProjects():
+    print "Geting a list of porjects for user"
     results = {}
-    i = 0
-    # This would print all the files and directories
-    for file in dirs:
-        i = i + 1
-        results[i] = file
-        print file
+    if isLoggedIn():
+        path = base_path + "/data/User/" + session['username'] + "/Projects"
+        dirs = 0s.listdir(path)
+        i = 0
+        for project in dirs:
+            i = i + 1
+            results[i] = project
+            print project
 
     return jsonify(results)
+
+
+@app.route("/api/getJSONFiles/<project_name>", methods=['GET'])
+def getProjectJSONFiles(project_name):
+    print "Getting files"
+    results = {}
+    if isLoggedIn():
+        path = base_path + "/data/User" + session['username'] + "/Projects/" + project_name
+        dirs = os.listdir(path)
+        i = 0
+        for file in dirs:
+            i = i + 1
+            results[i] = file
+            print file
+    return jsonify(results)
+    
 
 
 @app.route('/api/runnetwork', methods=['POST'])
@@ -185,25 +219,24 @@ def r_net_post():
 def index():
     return render_template('index.html')
 
-@app.route('/uploaddata', methods=['POST'])
+@app.route('api/uploaddata', methods=['POST'])
 def uploaddata():
+    if isLoggedIn():
     # Get the name of the uploaded file
-    file = request.files['file']
-    # Check if the file is one of the allowed types/extensions
-    if file and allowed_file(file.filename):
-        print "Allowed to save this file in folder", app.config['DATA_UPLOAD_FOLDER']
-        # Make the filename safe, remove unsupported chars
-        filename = secure_filename(file.filename)
-        # Move the file form the temporal folder to
-        # the upload folder we setup
-        fil_path = base_path + "/data/" + filename
-        file.save(fil_path)
-        # Redirect the user to the uploaded_file route, which
-        # will basicaly show on the browser the uploaded file
-    #    return redirect(url_for('uploaded_file',
-    #                            filename=filename))
-    else:
-        return "-1"
+        file = request.files['file']
+        # Check if the file is one of the allowed types/extensions
+        if file and allowed_file(file.filename):
+            print "Allowed to save this file in folder", app.config['DATA_UPLOAD_FOLDER']
+            # Make the filename safe, remove unsupported chars
+            filename = secure_filename(file.filename)
+            file_path = base_path + "/data/User/" + session['username'] + "/Data/" + filename
+            file.save(fil_path)
+            # Redirect the user to the uploaded_file route, which
+            # will basicaly show on the browser the uploaded file
+        #    return redirect(url_for('uploaded_file',
+        #                            filename=filename))
+        else:
+            return "-1"
     return render_template('index.html')
 
 @app.route('/uploadjson', methods=['POST'])
@@ -212,13 +245,16 @@ def uploadjson():
     file = request.files['file']
     # Check if the file is one of the allowed types/extensions
     if file and allowed_file(file.filename):
-        print "Allowed to save this file in folder", app.config['JSON_UPLOAD_FOLDER']
+        #print "Allowed to save this file in folder", app.config['JSON_UPLOAD_FOLDER']
         # Make the filename safe, remove unsupported chars
         filename = secure_filename(file.filename)
         # Move the file form the temporal folder to
         # the upload folder we setup
-        fil_path = base_path + "/JSON/" + filename
-        file.save(fil_path)
+        if session.get('logged_in'):
+            if session['logged_in']:
+                username = session['username']
+                fil_path = base_path + "/data/User/"+username.split("@") + "/JSON/" + filename
+                file.save(fil_path)
 
         #file.save(os.path.join(app.config['JSON_UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
@@ -230,7 +266,15 @@ def uploadjson():
     return render_template('index.html')
 
 
+@app.route('/test/test1', methods=['POST'])
+def create_group():
+    if not request.json or not 'data' in request.json:
+        abort(400)
+    #groups = request.json['data']
 
+    print request.json['data']
+    return "hi"
+    #return jsonify({'group': groups}), 200
 
 @app.route("/results/<job_key>", methods=['GET'])
 def get_results(job_key):

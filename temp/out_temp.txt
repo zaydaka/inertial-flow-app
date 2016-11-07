@@ -1,0 +1,18 @@
+Loading training set data/loanData.txt
+Loading testing set data/loanDataTesting.txt
+Stacking layers...
+adding input layer input_layer1
+Building graph for input_layer1
+Adding autoencoder layer autoencoder_0
+Building graph for autoencoder_0
+Adding autoencoder layer autoencoder_1
+Building graph for autoencoder_1
+Adding autoencoder layer autoencoder_2
+Building graph for autoencoder_2
+Adding autoencoder layer autoencoder_3
+Building graph for autoencoder_3
+Adding fully connected layer fully_connected
+Building graph for fully_connected
+Building full network training model...
+Starting network training..
+Final network accuracy: 0.86226
