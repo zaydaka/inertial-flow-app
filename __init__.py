@@ -174,7 +174,7 @@ def getProjects():
     results = {}
     if isLoggedIn():
         path = base_path + "/data/User/" + session['username'] + "/Projects"
-        dirs = 0s.listdir(path)
+        dirs = os.listdir(path)
         i = 0
         for project in dirs:
             i = i + 1
