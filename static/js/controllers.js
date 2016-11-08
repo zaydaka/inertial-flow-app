@@ -111,7 +111,7 @@ flowControllers.controller('UploadDataController', ['$scope', '$location','$log'
     var fd = new FormData();
     fd.append('file',file);
 
-    $http({method: 'POST', url: '/uploaddata',
+    $http({method: 'POST', url: '/api/uploaddata',
                          data: fd,
                          headers: {'Content-Type': undefined},
                          transformRequest: angular.identity}).

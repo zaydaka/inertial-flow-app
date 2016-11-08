@@ -3,6 +3,7 @@ import requests
 import operator
 import re
 import json
+import app_utils
 from rq import Queue
 from rq.job import Job
 from worker import conn
@@ -34,14 +35,7 @@ app.config['DATA_UPLOAD_FOLDER'] = '/data'
 app.config['JSON_UPLOAD_FOLDER'] = '/JSON'
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'csv','json'])
-
 base_path = os.path.dirname(__file__)
-
-
-
-
-
-
 
 
 
@@ -100,28 +94,9 @@ def register():
         html = render_template('user/activate.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
         reg_email.send_email(user.email, subject, html)
+        app_utils.setup_new_account(base_path,user.email)
         print "email sent i think!"
         status = 'success'
-        #creat the directory
-       # print "About to create a path dir"
-        u_name = user.email.replace("@","_")
-        u_name = u_name.replace(".","_")
-        path = base_path + "/data/User/" + u_name
-        print path
-        if not ox.path.exists(path):
-            os.makedirs(path)
-            print "Made User path"
-        path = base_path + "/data/User/" + u_name + "/Projects"
-        print path
-        if not ox.path.exists(path):
-            os.makedirs(path)
-            print "Made Projects path"
-        path = base_path + "/data/User/" + u_name + "/Data"
-        print path
-        if not ox.path.exists(path):
-            os.makedirs(path)
-            print "Made data path"
-
     except:
         print "There was an error"
         status = 'this user is already registered'
@@ -135,7 +110,7 @@ def login():
     user = User.query.filter_by(email=json_data['email']).first()
     if user and bcrypt.check_password_hash(user.password, json_data['password']):
         session['logged_in'] = True
-        session['username'] = user.email.replace("@","_");
+        session['username'] = user.email.replace("@","_").replace(".","_");
         status = True
     else:
         status = False
@@ -238,7 +213,7 @@ def uploaddata():
             # Make the filename safe, remove unsupported chars
             filename = secure_filename(file.filename)
             file_path = base_path + "/data/User/" + session['username'] + "/Data/" + filename
-            file.save(fil_path)
+            file.save(file_path)
             # Redirect the user to the uploaded_file route, which
             # will basicaly show on the browser the uploaded file
         #    return redirect(url_for('uploaded_file',
