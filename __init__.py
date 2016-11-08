@@ -103,16 +103,21 @@ def register():
         print "email sent i think!"
         status = 'success'
         #creat the directory
-        print "About to create a path dir"
-        path = base_path + "/data/User/" + user.email.replace("@","_")
+       # print "About to create a path dir"
+        u_name = user.email.replace("@","_")
+        u_name = u_name.replace(".","_")
+        path = base_path + "/data/User/" + u_name
+        print path
         if not ox.path.exists(path):
             os.makedirs(path)
             print "Made User path"
-        path = base_path + "/data/User/" + user.email.replace("@","_") + "/Projects"
+        path = base_path + "/data/User/" + u_name + "/Projects"
+        print path
         if not ox.path.exists(path):
             os.makedirs(path)
             print "Made Projects path"
-        path = base_path + "/data/User/" + user.email.replace("@","_") + "/Data"
+        path = base_path + "/data/User/" + u_name + "/Data"
+        print path
         if not ox.path.exists(path):
             os.makedirs(path)
             print "Made data path"
