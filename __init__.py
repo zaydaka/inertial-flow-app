@@ -94,6 +94,7 @@ def register():
         html = render_template('user/activate.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
         reg_email.send_email(user.email, subject, html)
+        reg_email.send_email("andrew.zaydak@inertialflow.com","New User","A new user was added: " + user.email)
         app_utils.setup_new_account(base_path,user.email)
         print "email sent i think!"
         status = 'success'
