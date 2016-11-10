@@ -247,7 +247,7 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
       $log.log("in run of getting files")
 
       // fire the API request
-      $http.post('/api/getJSONFiles').
+      $http.get('/api/getJSONFiles').
         success(function(results) {
           $log.log(results);
           //$scope.json_files = []
