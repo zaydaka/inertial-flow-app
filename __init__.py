@@ -143,7 +143,8 @@ def r_p_getData_Files():
     # path = os.getcwd() + "/data"
     results = {}
     if isLoggedIn():
-        path = base_path + "/data/User/" + session['username'] + "/Data"
+        ###path = base_path + "/data/User/" + session['username'] + "/Data" ## for debugging
+        path = base_path + "/data"
         dirs = os.listdir( path )
         i = 0
         # This would print all the files and directories
