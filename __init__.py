@@ -47,12 +47,11 @@ def allowed_file(filename):
 q = Queue(connection=conn)
 
 
-def run_network(f):
+def run_network(f,project_path):
     print "in count functin", f
-    file_path = base_path + "/data/User/" + session['username'] + "/Projects/Sample/"
 
     errors = []
-    result = inertial_flow.run_network(f,file_path)
+    result = inertial_flow.run_network(f,project_path)
     return result
 
 
@@ -210,9 +209,11 @@ def r_net_post():
     json_file = data["file"]
     # start job
     fil_path = base_path + "/temp/out_temp.txt"
+    project_path = base_path + "/data/User/" + session['username'] + "/Projects/Sample/"
+
     open(fil_path, 'w').close()       #clear inter comm file
     job = q.enqueue_call(
-        func="__init__.run_network", args=(json_file,), result_ttl=5000
+        func="__init__.run_network", args=(json_file,project_path,), result_ttl=5000
     )
     # return created job id
     return job.get_id()
