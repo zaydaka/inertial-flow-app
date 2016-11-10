@@ -21,7 +21,7 @@ def writeToTemp(s):
     f_t.write(s+"\n")
     f_t.close()
 
-def run_network(jsn_file):
+def run_network(jsn_file, project_save_path):
 
     fil_path = base_path + "/temp/out_temp.txt"
     print "filPath = ",fil_path
@@ -117,6 +117,7 @@ def run_network(jsn_file):
 # Start the session
     init = tf.initialize_all_variables()
     sess = tf.Session()
+    saver = tf.train.Saver()
     sess.run(init)
 
 # Do pretraining // asuume first layer is input layer
@@ -171,6 +172,9 @@ def run_network(jsn_file):
    
    
 # Close out session
+    print "Saving network... "
+    save_path = saver.save(sess, project_save_path + options['name'] + ".ckpt")
+    print "Saving network to ", save_path
     sess.close()
     #plt.show()
     #quit()

@@ -49,8 +49,10 @@ q = Queue(connection=conn)
 
 def run_network(f):
     print "in count functin", f
+    file_path = base_path + "/data/User/" + session['username'] + "/Projects/Sample/"
+
     errors = []
-    result = inertial_flow.run_network(f)
+    result = inertial_flow.run_network(f,file_path)
     return result
 
 
