@@ -143,8 +143,8 @@ def r_p_getData_Files():
     # path = os.getcwd() + "/data"
     results = {}
     if isLoggedIn():
-        ###path = base_path + "/data/User/" + session['username'] + "/Data" ## for debugging
-        path = base_path + "/data"
+        path = base_path + "/data/User/" + session['username'] + "/Data" ## for debugging
+        #path = base_path + "/data"
         dirs = os.listdir( path )
         i = 0
         # This would print all the files and directories
@@ -177,6 +177,21 @@ def getProjectJSONFiles(project_name):
     results = {}
     if isLoggedIn():
         path = base_path + "/data/User" + session['username'] + "/Projects/" + project_name
+        dirs = os.listdir(path)
+        i = 0
+        for file in dirs:
+            i = i + 1
+            results[i] = file
+            print file
+    return jsonify(results)
+
+@app.route("/api/getJSONFiles", methods=['GET'])
+def getProjectJSONFiles():
+    print "Getting files"
+    results = {}
+    if isLoggedIn():
+        #path = base_path + "/data/User" + session['username'] + "/Projects/" + project_name
+        path = base_path + "/JSON"
         dirs = os.listdir(path)
         i = 0
         for file in dirs:
