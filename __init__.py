@@ -172,7 +172,7 @@ def getProjects():
 
 
 @app.route("/api/getJSONFiles/<project_name>", methods=['GET'])
-def getProjectJSONFiles(project_name):
+def getProjectJSONFilesTest(project_name):
     print "Getting files"
     results = {}
     if isLoggedIn():
