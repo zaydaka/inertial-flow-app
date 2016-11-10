@@ -176,6 +176,11 @@ def run_network(jsn_file, project_save_path):
     save_path = saver.save(sess, project_save_path + options['name'] + ".ckpt")
     print "Saving network to ", save_path
     sess.close()
+
+    dirs = os.listdir(project_save_path)
+    for file in dirs:
+        os.chmod(file,0777)
+
     #plt.show()
     #quit()
     return outputs

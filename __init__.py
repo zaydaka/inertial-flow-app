@@ -234,6 +234,7 @@ def uploaddata():
             filename = secure_filename(file.filename)
             file_path = base_path + "/data/User/" + session['username'] + "/Data/" + filename
             file.save(file_path)
+            os.chmod(file_path,0777)
             # Redirect the user to the uploaded_file route, which
             # will basicaly show on the browser the uploaded file
         #    return redirect(url_for('uploaded_file',
@@ -258,6 +259,7 @@ def uploadjson():
                 username = session['username']
                 fil_path = base_path + "/data/User/"+username.split("@") + "/JSON/" + filename
                 file.save(fil_path)
+                os.chmod(fil_path,0777)
 
         #file.save(os.path.join(app.config['JSON_UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
