@@ -15,4 +15,4 @@ Adding fully connected layer fully_connected
 Building graph for fully_connected
 Building full network training model...
 Starting network training..
-Final network accuracy: 0.86226
+Final network accuracy: 0.864264

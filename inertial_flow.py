@@ -21,7 +21,12 @@ def writeToTemp(s):
     f_t.write(s+"\n")
     f_t.close()
 
-def run_network(jsn_file, project_save_path):
+def run_network(jsn_file, project_save_path,evaluate):
+
+    if evaluate is None:
+        evaluate = False        #do not train
+    else:
+        evaluete = True         # do training
 
     fil_path = base_path + "/temp/out_temp.txt"
     print "filPath = ",fil_path
@@ -39,34 +44,40 @@ def run_network(jsn_file, project_save_path):
     now = datetime.utcnow().strftime("%Y%m%d%H%M%S")
     logdir = "{}/{}-{}/".format(root_logdir,project_name, now)
 
-# Load data sets
-    if 'training_data' in options['data']:
-        for training_file in options['data']['training_data']:
-            ##print "Loading training set ", training_file['file_name']
-            writeToTemp("Loading training set " + training_file['file_name'])
-            if 'trX' in locals():
-                trX, trRef = nn_utils.extract_data(training_file['file_name'], trX, trRef, input_size=2)
-            else:
-                trX, trRef = nn_utils.extract_data(training_file['file_name'], input_size=2)
-    if 'validation_data' in options['data']:
-        for validation_file in options['data']['validation_data']:
-            ##print "Loading validation set ", validation_file['file_name']
-            writeToTemp("Loading validation set " + validation_file['file_name'])
-            if 'vlX' in locals():
-                vlX, vlRef = nn_utils.extract_data(validation_file['file_name'], vlX, vlRef)
-            else:
-                vlX, vlRef = nn_utils.extract_data(validation_file['file_name'])
-    if 'testing_data' in options['data']:
-        for testing_data in options['data']['testing_data']:
-            ##print "Loading testing set ", testing_data['file_name']
-            writeToTemp("Loading testing set " + testing_data['file_name'])
-            if 'teX' in locals():
-                teX = nn_utils.extract_data(testing_data['file_name'], teX)
-            else:
-                teX = nn_utils.extract_data(testing_data['file_name'])
+    if evaluate==False:
+        # Load data sets
+        if 'training_data' in options['data']:
+            for training_file in options['data']['training_data']:
+                ##print "Loading training set ", training_file['file_name']
+                writeToTemp("Loading training set " + training_file['file_name'])
+                if 'trX' in locals():
+                    trX, trRef = nn_utils.extract_data(training_file['file_name'], trX, trRef, input_size=2)
+                else:
+                    trX, trRef = nn_utils.extract_data(training_file['file_name'], input_size=2)
+        if 'validation_data' in options['data']:
+            for validation_file in options['data']['validation_data']:
+                ##print "Loading validation set ", validation_file['file_name']
+                writeToTemp("Loading validation set " + validation_file['file_name'])
+                if 'vlX' in locals():
+                    vlX, vlRef = nn_utils.extract_data(validation_file['file_name'], vlX, vlRef)
+                else:
+                    vlX, vlRef = nn_utils.extract_data(validation_file['file_name'])
+        if 'testing_data' in options['data']:
+            for testing_data in options['data']['testing_data']:
+                ##print "Loading testing set ", testing_data['file_name']
+                writeToTemp("Loading testing set " + testing_data['file_name'])
+                if 'teX' in locals():
+                    teX = nn_utils.extract_data(testing_data['file_name'], teX)
+                else:
+                    teX = nn_utils.extract_data(testing_data['file_name'])
+    else:
+        n_sampe = 1
+        input_size = 17 #hardcoded
 
 # Stack and build the layers
-    n_samp, input_size = teX.shape
+    if evaluate==False:
+        n_samp, input_size = teX.shape
+
     net_layers = []
     layerNumber = -1
     print "Stacking layers..."
@@ -112,57 +123,74 @@ def run_network(jsn_file, project_save_path):
         train_step = tf.train.AdamOptimizer(options['learning_rate']).minimize(cost)
 
         correct_prediction = tf.equal(tf.argmax(net_layers[len(net_layers)-1].encode, 1), tf.argmax(y_, 1))
+        evaluate_full = net_layers[len(net_layers)-1].encode
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    elif evaluate==True:
+        writeToTemp("Creating evaluation network")
+        evaluate_full = net_layers[len(net_layers)-1].encodea
+
+
 
 # Start the session
     init = tf.initialize_all_variables()
     sess = tf.Session()
+    
     saver = tf.train.Saver()
+
+
     sess.run(init)
 
-# Do pretraining // asuume first layer is input layer
-    pre_training_data = net_layers[0].encode_data(sess,teX)
-    for i in range(1,len(net_layers),1):
-        ae = net_layers[i]
-        if ae.layer_type == "Autoencoder":
-            if net_layers[i-1].layer_type == "Input" and ae.pre_train:
-                ##print "Pre Training encoder ", ae.name
-                writeToTemp("Pre training encoder " + ae.name)
-                ae.pre_train_model(sess,pre_training_data)
-                pre_training_data = ae.encode_data(sess,pre_training_data)
-            elif ae.pre_train:
-                if net_layers[i-1].pre_train != True:
-                    k = [] ##remove
-                    ##print "WARNING: Cannot pre-train ", ae.name, " because a previous layer is not pre-trained."
-                    writeToTemp("WARNING: Cannot pre-train " + ae.name + " because a previous layer is not pre-trained")
-                else:
+    if evaluate==False:
+    # Do pretraining // asuume first layer is input layer
+        pre_training_data = net_layers[0].encode_data(sess,teX)
+        for i in range(1,len(net_layers),1):
+            ae = net_layers[i]
+            if ae.layer_type == "Autoencoder":
+                if net_layers[i-1].layer_type == "Input" and ae.pre_train:
                     ##print "Pre Training encoder ", ae.name
                     writeToTemp("Pre training encoder " + ae.name)
                     ae.pre_train_model(sess,pre_training_data)
                     pre_training_data = ae.encode_data(sess,pre_training_data)
-                    ##print "size of pre_training_data ", pre_training_data.shape
+                elif ae.pre_train:
+                    if net_layers[i-1].pre_train != True:
+                        k = [] ##remove
+                        ##print "WARNING: Cannot pre-train ", ae.name, " because a previous layer is not pre-trained."
+                        writeToTemp("WARNING: Cannot pre-train " + ae.name + " because a previous layer is not pre-trained")
+                    else:
+                        ##print "Pre Training encoder ", ae.name
+                        writeToTemp("Pre training encoder " + ae.name)
+                        ae.pre_train_model(sess,pre_training_data)
+                        pre_training_data = ae.encode_data(sess,pre_training_data)
+                        ##print "size of pre_training_data ", pre_training_data.shape
+    else:
+        print "Restoring the past session"
+        saver.restore(sess,project_save_path + options['name'] + ".ckpt")
 
 # Run the training
     outputs = ""
-    if 'trX' in locals() and 'trRef' in locals():
-        ##print "Starting network training..."
-        writeToTemp("Starting network training..")
-        n_samp, n_input = trX.shape
-        batch_size = min(options['batch_size'],n_samp)
-        for i in range(options['training_rounds']):
-            sample = np.random.randint(n_samp, size=batch_size)
-            batch_xs = trX[sample][:]
-            batch_ys = trRef[sample][:]
-            sess.run(train_step, feed_dict={net_layers[0]._input_data: batch_xs, y_: batch_ys})
-            if i % 100 == 0:
-                print "Round:",i, " Accuracy: ",sess.run(accuracy, feed_dict={net_layers[0]._input_data: trX,y_: trRef})
-                acc = sess.run(accuracy, feed_dict={net_layers[0]._input_data: trX,y_: trRef})
-                outputs = "Accuracy: " + str(acc)
-                #writeToTemp(outputs)
-                #print "Round:",i, " Accuracy: ",sess.run(accuracy, feed_dict={net_layers[0]._input_data: trX,y_: trRef})
-        acc = sess.run(accuracy, feed_dict={net_layers[0]._input_data: trX,y_: trRef})
-        outputs = "Final network accuracy: " + str(acc)
-        writeToTemp(outputs)
+    if evaluate==False:
+        if 'trX' in locals() and 'trRef' in locals():
+            ##print "Starting network training..."
+            writeToTemp("Starting network training..")
+            n_samp, n_input = trX.shape
+            batch_size = min(options['batch_size'],n_samp)
+            for i in range(options['training_rounds']):
+                sample = np.random.randint(n_samp, size=batch_size)
+                batch_xs = trX[sample][:]
+                batch_ys = trRef[sample][:]
+                sess.run(train_step, feed_dict={net_layers[0]._input_data: batch_xs, y_: batch_ys})
+                if i % 100 == 0:
+                    print "Round:",i, " Accuracy: ",sess.run(accuracy, feed_dict={net_layers[0]._input_data: trX,y_: trRef})
+                    acc = sess.run(accuracy, feed_dict={net_layers[0]._input_data: trX,y_: trRef})
+                    outputs = "Accuracy: " + str(acc)
+                    #writeToTemp(outputs)
+                    #print "Round:",i, " Accuracy: ",sess.run(accuracy, feed_dict={net_layers[0]._input_data: trX,y_: trRef})
+            acc = sess.run(accuracy, feed_dict={net_layers[0]._input_data: trX,y_: trRef})
+            outputs = "Final network accuracy: " + str(acc)
+            writeToTemp(outputs)
+    else:
+        res = sess.run(evaluate_full, feed_dict={net_layers[0]._input_data: test})
+        print "Result is " + str(trX)
     
     
     
@@ -178,8 +206,8 @@ def run_network(jsn_file, project_save_path):
     sess.close()
 
     dirs = os.listdir(project_save_path)
-    for file in dirs:
-        os.chmod(file,0777)
+    #for file in dirs:
+    #    os.chmod(file,0777)
 
     #plt.show()
     #quit()

@@ -47,11 +47,11 @@ def allowed_file(filename):
 q = Queue(connection=conn)
 
 
-def run_network(f,project_path):
+def run_network(f,project_path,evalueate=None):
     print "in count functin", f
 
     errors = []
-    result = inertial_flow.run_network(f,project_path)
+    result = inertial_flow.run_network(f,project_path,evaluate)
     return result
 
 
