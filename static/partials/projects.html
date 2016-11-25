@@ -1,0 +1,91 @@
+<h1>Projects: </h1>
+<p>Pick a network file to run against your data.  More info on the Network File format to come...</p>
+<br><br>
+<hr>
+<div class="container-fluid text-left" ng-controller="RunNetworkController" ng-init="getJSONFiles()">
+  <div class="row">
+  
+   <div>
+      <form role="form" ng-submit="runNetwork()">
+        <div class="form-group">
+        <!--  <input type="text" name="file" class="form-control" id="url-box" placeholder="enter json file" style="max-width: 300px;" ng-model="file" required>-->
+        </div>
+        <!--{% raw %}-->
+        <button type="submit" class="btn btn-primary" ng-disabled="loading">{{ submitButtonText }}</button>
+        <!--{% endraw %}-->
+      </form>
+    </div>
+    <div class="col-sm-2 text-left" ng-show="loading">
+      <img  src="static/img/spinner.gif" ng-show="loading" style="max-height: 50px">
+    </div>
+  </div>
+
+  <div class="row">
+    <hr>
+
+
+
+
+    <h3>Your Projects</h3>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+         <h3 class="panel-title pull-left">Project #1</h3>
+          <button class="btn btn-default pull-right">Edit</button>
+          <button class="btn btn-default pull-right">Delete</button>
+          <div class="clearfix"></div>
+      </div>
+      <div class="panel-body">Project #1 description</div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+         <h3 class="panel-title pull-left">Project #2</h3>
+          <button class="btn btn-default pull-right">Edit</button>
+          <button class="btn btn-default pull-right">Delete</button>
+          <div class="clearfix"></div>
+      </div>
+      <div class="panel-body">Project #2 description</div>
+    </div>
+   <!-- <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Files</th> 
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="json in json_files">
+          <td>
+            <input type="checkbox" checklist-model="checked_json_files" checklist-value="json"> {{json}}
+          </td>
+        </tr>
+      </tbody>
+    </table>-->
+
+
+
+
+    <br>
+  </div>
+            
+  <div  class="row" id="results" style="overflow-y:scroll;">
+  <hr>
+  <h3>Consol Log</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th style="max-width: 20px;">ID</th>
+          <th>Message</th> 
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(key, val) in runresults">
+          <td>{{key}}</td>
+          <td>{{val}}</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+  
+  </div>
+

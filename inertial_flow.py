@@ -21,7 +21,7 @@ def writeToTemp(s):
     f_t.write(s+"\n")
     f_t.close()
 
-def run_network(jsn_file, project_save_path,evaluate):
+def run_network(jsn_file, project_save_path,evaluate=None):
 
     if evaluate is None:
         evaluate = False        #do not train
@@ -168,6 +168,7 @@ def run_network(jsn_file, project_save_path,evaluate):
 
 # Run the training
     outputs = ""
+    
     if evaluate==False:
         if 'trX' in locals() and 'trRef' in locals():
             ##print "Starting network training..."
@@ -200,12 +201,14 @@ def run_network(jsn_file, project_save_path,evaluate):
    
    
 # Close out session
-    print "Saving network... "
-    save_path = saver.save(sess, project_save_path + options['name'] + ".ckpt")
-    print "Saving network to ", save_path
-    sess.close()
+    if evaluate==False:
+        print "Saving network... "
+        save_path = saver.save(sess, project_save_path + options['name'] + ".ckpt")
+        print "Saving network to ", save_path
+        sess.close()
 
-    dirs = os.listdir(project_save_path)
+        dirs = os.listdir(project_save_path)
+
     #for file in dirs:
     #    os.chmod(file,0777)
 
