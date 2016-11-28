@@ -130,7 +130,7 @@ def createProject():
 
 
     path = base_path + "/data/User/" + session['username'] + "/Projects/"
-    app_utils.create_project(path,project_name)
+    app_utils.create_project(path,new_project_name)
 
     print "creating a project for ", new_project_name
 
