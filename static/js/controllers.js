@@ -10,8 +10,7 @@ var flowControllers = angular.module('flowControllers',[])
 //// Controller for showing a user's projects ////
 ////////////////////////////////
 flowControllers.controller('ProjectsController',
-  ['$scope', '$location', 'AuthService',
-  function ($scope, $location, AuthService) {
+  ['$scope', '$location', '$http','$log', function($scope, $location, $http,$log) {
 //createNewProject()
   $scope.createNewProject = function() {
 
