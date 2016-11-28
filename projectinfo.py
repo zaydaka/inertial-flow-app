@@ -17,7 +17,7 @@ class ProjectInfo:
 
     def create_new_project(self,path,project_name):
         fileName = path + "/" + project_name + ".info"
-        f = open("fileName","w")
+        f = open(fileName,"w")
         f.write(project_name+"\n")
         f.close()
 
