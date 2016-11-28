@@ -54,6 +54,10 @@ def run_network(f,project_path,evalueate=None):
     result = inertial_flow.run_network(f,project_path,evaluate)
     return result
 
+@app.route('/projects/<project_name>')
+def show_project(project_name):
+    print "showing new project"
+    return "showing new project"
 
 @app.route('/confirm/<token>')
 def confirm_email(token):
@@ -117,6 +121,20 @@ def login():
     else:
         status = False
     return jsonify({'result': status})
+
+@app.route('/api/createNewProject', methods=['POST'])
+def createProject():
+    print "in creating a project"
+    json_data = request.json
+    new_project_name = json_data["project_name"]
+
+
+    path = base_path + "/data/User/" + session['username'] + "/Projects/"
+    app_utils.create_project(path,project_name)
+
+    print "creating a project for ", new_project_name
+
+
 
 @app.route('/api/logout')
 def logout():

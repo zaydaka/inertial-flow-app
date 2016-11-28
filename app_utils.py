@@ -1,8 +1,20 @@
 from shutil import copyfile
 import os
+import csv
+from projectinfo import ProjectInfo
+
 
 def copy_default_to_new_user():
 	copyfile(src, dst)
+
+def create_project(base_path,project_name):
+	path = base_path + project_name
+	if not os.path.exists(path):
+		os.makedirs(path)
+		os.chmod(path,0777)
+
+	prj = ProjectInfo()
+	prj.create_new_project(path,project_name)
 
 
 def setup_new_account(base_path, user):

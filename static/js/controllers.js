@@ -6,7 +6,39 @@ var flowControllers = angular.module('flowControllers',[])
 ////////////////////////////////
 //// Main Controller  ////
 ////////////////////////////////
+ProjectsController
+////////////////////////////////
+//// Controller for showing a user's projects ////
+////////////////////////////////
+flowControllers.controller('ProjectsController',
+  ['$scope', '$location', 'AuthService',
+  function ($scope, $location, AuthService) {
+//createNewProject()
+  $scope.createNewProject = function() {
 
+      $log.log("Creating a new project!");
+
+      // fire the API request
+      //for(var i=0; i < $scope.checked_json_files.length; i++){
+        var project_name = $scope.newProject.project_name;
+        $http.post('/api/createNewProject', {"project_name":project_name}).
+        success(function(results) {
+          $log.log("Success!")
+          $log.log(results);
+          $location.path('/projects/project_name')
+          //$location.path('/');
+
+        }).
+        error(function(error) {
+          $log.log("there is an error creating the project! :(")
+          $log.log(error);
+        });
+      //}
+      
+
+  };
+
+}]);
 ////////////////////////////////
 //// Controller for creating an account in ////
 ////////////////////////////////
@@ -43,7 +75,7 @@ flowControllers.controller('registerController',
 }]);
 
 ////////////////////////////////
-//// Controller for logging in ////
+//// Controller for logging out ////
 ////////////////////////////////
 
 flowControllers.controller('logoutController',
