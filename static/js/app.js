@@ -27,12 +27,12 @@ InertialFlowApp.config(['$routeProvider',
         // controller: 'AboutCtrl'
       }).
       when('/projects', {
-        templateUrl: '../static/partials/about.html',
+        templateUrl: '../static/partials/projects.html',
         access: {restricted: false}
         // controller: 'AboutCtrl'
       }).
       when('/about', {
-        templateUrl: '../static/partials/projects.html',
+        templateUrl: '../static/partials/about.html',
         access: {restricted: true}
         // controller: 'AboutCtrl'
       }).
