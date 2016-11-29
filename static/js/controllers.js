@@ -6,35 +6,79 @@ var flowControllers = angular.module('flowControllers',[])
 ////////////////////////////////
 //// Main Controller  ////
 ////////////////////////////////
+
+
+////////////////////////////////
+//// Controller for showing a particular project////
+////////////////////////////////
+flowControllers.controller('MyProjectController', ['$scope', '$location', '$http', '$log', 'AuthService',
+ function($scope, $location, $http, $log, $timeout, $AuthService) {
+
+  $scope.projectName = 'hello!';
+
+  $scope.getJSONFiles = function() {
+
+
+      // get the JSON file 
+      //$scope.checked_json_files = null
+      $scope.json_files = null
+      $scope.checked_json_files = []
+      //$scope.user.json_files = null
+      $log.log("in run of getting files")
+
+      // fire the API request
+      $http.get('/api/getJSONFiles').
+        success(function(results) {
+          $log.log(results);
+          //$scope.json_files = []
+          //for(var i = 0, size = results.length; i < size ; i++){
+          //  $scope.json_files.push({file_name:results[i],checked:false})
+          //}
+
+          $scope.json_files = results
+          //getNetworkResults(results); 
+        }).
+        error(function(error) {
+          $log.log("there is an error :(")
+          $log.log(error);
+        });
+
+  };
+
+
+
 ////////////////////////////////
 //// Controller for showing a user's projects ////
 ////////////////////////////////
-flowControllers.controller('ProjectsController',
-  ['$scope', '$location', '$http','$log', function($scope, $location, $http,$log) {
-//createNewProject()
+flowControllers.controller('ProjectsController',['$scope', '$location', '$http','$log', function($scope, $location, $http,$log) {
+
   $scope.createNewProject = function() {
+    $log.log("Creating a new project!");
+    var project_name = $scope.newProject.project_name;
+    $http.post('/api/createNewProject', {"project_name":project_name}).success(function(results) {
+      $log.log("Success!")
+      $log.log(results);
+      $location.path('/project')
+    }).error(function(error) {
+      $log.log("there is an error creating the project! :(")
+       $log.log(error);
+    });
+  };
 
-      $log.log("Creating a new project!");
-
-      // fire the API request
-      //for(var i=0; i < $scope.checked_json_files.length; i++){
-        var project_name = $scope.newProject.project_name;
-        $http.post('/api/createNewProject', {"project_name":project_name}).
-        success(function(results) {
-          $log.log("Success!")
-          $log.log(results);
-          $location.path('/projects/project_name')
-          //$location.path('/');
-
+  $scope.getUserProjects = function(){
+    $log.log("Getting a list of all user projects");
+    $scope.project_names = null
+    $scope.project_descriptions = null
+    $http.get('/api/getListOfUserProjects').
+      success(function(prj_names) {
+        $log.log(prj_names);
+        $scope.project_names = prj_names 
         }).
         error(function(error) {
-          $log.log("there is an error creating the project! :(")
+          $log.log("there is an error getting a list of the projects :(")
           $log.log(error);
         });
-      //}
-      
-
-  };
+  }
 
 }]);
 ////////////////////////////////

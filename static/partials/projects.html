@@ -25,9 +25,12 @@
     <div class="row">
       <hr>
       <h3>Your Projects</h3>
-      <div class="panel panel-default">
+
+
+
+      <div class="panel panel-default" ng-repeat="prjs in project_names">
         <div class="panel-heading">
-           <h3 class="panel-title pull-left">Project #1</h3>
+           <h3 class="panel-title pull-left">{{prjs}}</h3>
             <button class="btn btn-default pull-right">Edit</button>
             <button class="btn btn-default pull-right">Delete</button>
             <div class="clearfix"></div>
@@ -35,7 +38,10 @@
         <div class="panel-body">Project #1 description</div>
       </div>
 
-      <div class="panel panel-default">
+
+
+          
+   <!--   <div class="panel panel-default">
         <div class="panel-heading">
            <h3 class="panel-title pull-left">Project #2</h3>
             <button class="btn btn-default pull-right">Edit</button>
@@ -43,7 +49,7 @@
             <div class="clearfix"></div>
         </div>
         <div class="panel-body">Project #2 description</div>
-      </div>
+      </div>-->
     </div>
 
   </div>

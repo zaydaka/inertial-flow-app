@@ -55,6 +55,11 @@ InertialFlowApp.config(['$routeProvider',
         templateUrl: '../static/partials/contact.html',
         access: {restricted: false}
       }).
+      when('/project', {
+        templateUrl: '../static/partials/project.html',
+        access: {restricted: true},
+        controller: 'MyProjectController'
+      }).
       otherwise({
         redirectTo: '/',
         access: {restricted: false}

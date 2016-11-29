@@ -16,6 +16,7 @@ from flask.ext.bcrypt import Bcrypt
 from flask_mail import Mail
 from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import URLSafeTimedSerializer
+import projectinfo
 
 from config import BaseConfig
 from flask.ext.mail import Message
@@ -117,6 +118,7 @@ def login():
     if user and bcrypt.check_password_hash(user.password, json_data['password']):
         session['logged_in'] = True
         session['username'] = user.email.replace("@","_").replace(".","_");
+        session['current_project'] = "None"
         status = True
     else:
         status = False
@@ -133,6 +135,9 @@ def createProject():
     app_utils.create_project(path,new_project_name)
 
     print "creating a project for ", new_project_name
+
+    session['current_project'] = new_project_name
+    return jsonify({'result': 'success'})
 
 
 
@@ -217,7 +222,15 @@ def getProjectJSONFiles():
             print file
     return jsonify(results)
     
+@app.route("/api/getListOfUserProjects", methods=['GET'])
+def getListOfUserProjects():
+    print "Getting list of projects.."
+    results = {}
+    if isLoggedIn():
+        path = base_path + "/data/User/" + session['username'] + "/Projects/"
+        results = projectinfo.listValidProjects(path)
 
+    return jsonify(results)
 
 @app.route('/api/runnetwork', methods=['POST'])
 def r_net_post():
