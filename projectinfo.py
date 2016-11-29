@@ -40,9 +40,10 @@ def listValidProjects(path):
 def getProjectNameFromPath(path):
     results = "None"
     print "in getProjectnameFromPath",path
-    with open(path) as f:
-        results = f.readline()
-        print "getProjectnameFromPath",results
+    if os.path.isfile(path):
+        with open(path) as f:
+            results = f.readline()
+            print "getProjectnameFromPath",results
     return results
 
 
