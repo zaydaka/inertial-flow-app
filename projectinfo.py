@@ -37,7 +37,7 @@ def listValidProjects(path):
                 results[i] = prj_name
 
 
-def getProjectnameFromPath(path):
+def getProjectNameFromPath(path):
     results = "None"
     print "in getProjectnameFromPath",path
     with open(path) as f:
