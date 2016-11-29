@@ -230,7 +230,7 @@ def getListOfUserProjects():
         path = base_path + "/data/User/" + session['username'] + "/Projects/"
         results = projectinfo.listValidProjects(path)
 
-    if len(results)==0:
+    if results == None:
         results[1] = "None"
     return jsonify(results)
 
