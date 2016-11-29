@@ -234,7 +234,7 @@ def getListOfUserProjects():
             print "testing",name
             if os.path.isdir(path+name):
                 print "validating ",name
-                prj_name = projectinfo.getProjectNameFromPath(path + "/" + name + "/" + name + ".info")
+                prj_name = projectinfo.getProjectNameFromPath(path + name + "/" + name + ".info")
                 if prj_name != "None":
                     i = i + 1
                     results[i] = prj_name
