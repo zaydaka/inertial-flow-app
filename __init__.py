@@ -228,6 +228,7 @@ def getListOfUserProjects():
     results = {}
     if isLoggedIn():
         path = base_path + "/data/User/" + session['username'] + "/Projects/"
+        print "looking into ", path
         i = 0
         for name in os.listdir(path):
             if os.path.isdir(name):
