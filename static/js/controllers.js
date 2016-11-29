@@ -45,7 +45,7 @@ flowControllers.controller('MyProjectController', ['$scope', '$location', '$http
 
   };
 
-
+}]);
 
 ////////////////////////////////
 //// Controller for showing a user's projects ////
