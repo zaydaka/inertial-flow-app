@@ -228,10 +228,15 @@ def getListOfUserProjects():
     results = {}
     if isLoggedIn():
         path = base_path + "/data/User/" + session['username'] + "/Projects/"
-        results = projectinfo.listValidProjects(path)
+        i = 0
+        for name in os.listdir(path):
+        if os.path.isdir(name):
+            print "validating ",name
+            prj_name = projectinfo.getProjectNameFromPath(path + "/" + name + "/" + name + ".info")
+            if prj_name != "None":
+                i = i + 1
+                results[i] = prj_name
 
-    if results == None:
-        results[1] = "None"
     return jsonify(results)
 
 @app.route('/api/runnetwork', methods=['POST'])
