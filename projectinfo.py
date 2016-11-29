@@ -23,7 +23,8 @@ class ProjectInfo:
         os.chmod(fileName,0777)
         self.name = project_name
 
-    def listValidProjects(path):
+
+def listValidProjects(path):
         print "in listValidProjects"
         results = {}
         i = 0
