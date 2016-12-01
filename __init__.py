@@ -111,6 +111,10 @@ def register():
     db.session.close()
     return jsonify({'result': status})
 
+@app.route('/api/currentProject', methods=['GET'])
+def GETcurrentProject():
+    return session['current_project']
+
 @app.route('/api/login', methods=['POST'])
 def login():
     json_data = request.json

@@ -14,17 +14,28 @@ var flowControllers = angular.module('flowControllers',[])
 flowControllers.controller('MyProjectController', ['$scope', '$location', '$http', '$log', 'AuthService',
  function($scope, $location, $http, $log, $timeout, $AuthService) {
 
-  $scope.projectName = 'hello!';
+  $scope.projectName = '';
+
+  $scope.getCurrentProject = function(){
+    $http.get('/api/currentProject').success(function(prj_name) {
+      if(prj_name!="None"){
+        $scope.projectName - prj_name;
+      }
+    }).error(function(error) {
+      $log.log("there is an error getting the current project name :(");
+      $log.log(error);
+    });
+  }
 
   $scope.getJSONFiles = function() {
 
 
       // get the JSON file 
       //$scope.checked_json_files = null
-      $scope.json_files = null
-      $scope.checked_json_files = []
+      $scope.json_files = null;
+      $scope.checked_json_files = [];
       //$scope.user.json_files = null
-      $log.log("in run of getting files")
+      $log.log("in run of getting files");
 
       // fire the API request
       $http.get('/api/getJSONFiles').
@@ -35,11 +46,11 @@ flowControllers.controller('MyProjectController', ['$scope', '$location', '$http
           //  $scope.json_files.push({file_name:results[i],checked:false})
           //}
 
-          $scope.json_files = results
+          $scope.json_files = results;
           //getNetworkResults(results); 
         }).
         error(function(error) {
-          $log.log("there is an error :(")
+          $log.log("there is an error :(");
           $log.log(error);
         });
 
@@ -56,9 +67,9 @@ flowControllers.controller('ProjectsController',['$scope', '$location', '$http',
     $log.log("Creating a new project!");
     var project_name = $scope.newProject.project_name;
     $http.post('/api/createNewProject', {"project_name":project_name}).success(function(results) {
-      $log.log("Success!")
+      $log.log("Success!");
       $log.log(results);
-      $location.path('/project')
+      $location.path('/project');
     }).error(function(error) {
       $log.log("there is an error creating the project! :(")
        $log.log(error);
@@ -67,17 +78,15 @@ flowControllers.controller('ProjectsController',['$scope', '$location', '$http',
 
   $scope.getUserProjects = function(){
     $log.log("Getting a list of all user projects");
-    $scope.project_names = null
-    $scope.project_descriptions = null
-    $http.get('/api/getListOfUserProjects').
-      success(function(prj_names) {
-        $log.log(prj_names);
-        $scope.project_names = prj_names 
-        }).
-        error(function(error) {
-          $log.log("there is an error getting a list of the projects :(")
-          $log.log(error);
-        });
+    $scope.project_names = null;
+    $scope.project_descriptions = null;
+    $http.get('/api/getListOfUserProjects').success(function(prj_names) {
+      $log.log(prj_names);
+      $scope.project_names = prj_names ;
+    }).error(function(error) {
+      $log.log("there is an error getting a list of the projects :(");
+      $log.log(error);
+    });
   }
 
 }]);
@@ -192,13 +201,13 @@ flowControllers.controller('UploadDataController', ['$scope', '$location','$log'
         success(function(results) {
           if(results=="-1"){
             $scope.fileError = true;
-            $log.log("not good")
+            $log.log("not good");
           }else{
             $scope.getDataFiles();
           }
         }).
         error(function(error) {
-          $log.log("there is an error :(")
+          $log.log("there is an error :(");
           $log.log(error);
           $scope.urlerror = true;
         });
@@ -208,18 +217,18 @@ flowControllers.controller('UploadDataController', ['$scope', '$location','$log'
   };
   $scope.getDataFiles = function() {
       // get the JSON file 
-      $scope.filelist = null
-      $log.log("in run of getting files")
+      $scope.filelist = null;
+      $log.log("in run of getting files");
 
       // fire the API request
       $http.post('/api/getDataFiles').
         success(function(results) {
           $log.log(results);
-          $scope.filelist = results
+          $scope.filelist = results;
           //getNetworkResults(results); 
         }).
         error(function(error) {
-          $log.log("there is an error :(")
+          $log.log("there is an error :(");
           $log.log(error);
         });
 
@@ -251,13 +260,13 @@ flowControllers.controller('UploadJsonController', ['$scope', '$location', '$htt
         success(function(results) {
           if(results=="-1"){
             $scope.fileError = true;
-            $log.log("not good")
+            $log.log("not good");
           }else{
             $scope.getJSONFiles();
           }
         }).
         error(function(error) {
-          $log.log("there is an error :(")
+          $log.log("there is an error :(");
           $log.log(error);
           $scope.urlerror = true;
         });
@@ -267,18 +276,18 @@ flowControllers.controller('UploadJsonController', ['$scope', '$location', '$htt
   };
   $scope.getJSONFiles = function() {
       // get the JSON file 
-      $scope.filelist = null
-      $log.log("in run of getting files")
+      $scope.filelist = null;
+      $log.log("in run of getting files");
 
       // fire the API request
       $http.post('/api/getJSONFiles').
         success(function(results) {
           $log.log(results);
-          $scope.filelist = results
+          $scope.filelist = results;
           //getNetworkResults(results); 
         }).
         error(function(error) {
-          $log.log("there is an error :(")
+          $log.log("there is an error :(");
           $log.log(error);
         });
 
@@ -315,10 +324,10 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
 
       // get the JSON file 
       //$scope.checked_json_files = null
-      $scope.json_files = null
-      $scope.checked_json_files = []
+      $scope.json_files = null;
+      $scope.checked_json_files = [];
       //$scope.user.json_files = null
-      $log.log("in run of getting files")
+      $log.log("in run of getting files");
 
       // fire the API request
       $http.get('/api/getJSONFiles').
@@ -329,11 +338,11 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
           //  $scope.json_files.push({file_name:results[i],checked:false})
           //}
 
-          $scope.json_files = results
+          $scope.json_files = results;
           //getNetworkResults(results); 
         }).
         error(function(error) {
-          $log.log("there is an error :(")
+          $log.log("there is an error :(");
           $log.log(error);
         });
 
@@ -346,15 +355,15 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
   $scope.runNetwork = function() {
       // get the JSON file 
       //$log.log($scope.user.json_files)
-      $log.log($scope.checked_json_files)
+      $log.log($scope.checked_json_files);
       //var userInput = $scope.file;
       //$log.log("in run of RunNetworkController")
       //$log.log(userInput)
       // fire the API request
       for(var i=0; i < $scope.checked_json_files.length; i++){
-        $log.log("running network:")
-        $log.log($scope.checked_json_files[i])
-        var file_to_run = "JSON/"+$scope.checked_json_files[i]
+        $log.log("running network:");
+        $log.log($scope.checked_json_files[i]);
+        var file_to_run = "JSON/"+$scope.checked_json_files[i];
         $http.post('/api/runnetwork', {"file":file_to_run}).
         success(function(results) {
           $log.log(results);
@@ -364,7 +373,7 @@ flowControllers.controller('RunNetworkController', ['$scope', '$location', '$htt
           $scope.submitButtonText = 'Running...';
         }).
         error(function(error) {
-          $log.log("there is an error :(")
+          $log.log("there is an error :(");
           $log.log(error);
         });
       }
@@ -393,7 +402,7 @@ function getNetworkResults(jobID) {
               $log.log("finished!!")
               $log.log(data);
               $scope.loading = false;
-              $scope.submitButtonText = "Submit"
+              $scope.submitButtonText = "Submit";
               $scope.runresults = data;
               $scope.urlerror = false;
               $timeout.cancel(timeout);
