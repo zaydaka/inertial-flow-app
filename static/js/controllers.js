@@ -94,7 +94,8 @@ flowControllers.controller('ProjectsController',['$scope', '$location', '$http',
     $http.post('/api/deleteProject', {"project_to_delete":project_to_delete}).success(function(results) {
       $log.log("Success!");
       $log.log(results);
-      $location.path('/projects');
+      //$location.path('/projects');
+      $scope.getUserProjects();
     }).error(function(error) {
       $log.log("there is an error deleting the project! :(")
        $log.log(error);
