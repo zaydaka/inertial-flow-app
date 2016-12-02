@@ -18,7 +18,9 @@ def create_project(base_path,project_name):
 	prj.create_new_project(path,project_name)
 
 def delete_project(path_to_delete):
+	print "testing path", path_to_delete
 	if os.path.isdir(path_to_delete):
+		print "Removing path", path_to_delete
 		shutil.rmtree(path_to_delete)
 
 def setup_new_account(base_path, user):
