@@ -21,10 +21,6 @@ def delete_project(path_to_delete):
 	if os.path.isdir(path_to_delete):
         shutil.rmtree(path_to_delete)
 
-
-
-
-
 def setup_new_account(base_path, user):
 	print "in fuctions"
 	u_name = user.replace("@","_")
