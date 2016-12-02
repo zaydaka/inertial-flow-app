@@ -11,7 +11,7 @@ class ProjectInfo:
         with open(file_name) as f:
             for i,line in enumerate(fp):
                 if i == 0:
-                    self.name = line
+                    self.name = line.replace('\n','')
                 elif i == 1:
                     self.description = line
 
@@ -42,7 +42,7 @@ def getProjectNameFromPath(path):
     print "in getProjectnameFromPath",path
     if os.path.isfile(path):
         with open(path) as f:
-            results = f.readline()
+            results = f.readline().replace('\n','')
             print "getProjectnameFromPath",results
     return results
 
