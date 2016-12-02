@@ -148,7 +148,7 @@ def deleteProject():
     print "in deleting project"
     json_data = request.json
     project_to_delete = json_data["project_to_delete"]
-    path = base_path + "/data/User/" + session['username'] + "/Projects/" + project_to_delete
+    path = base_path + "/data/User/" + session['username'] + "/Projects/" + project_to_delete + "/"
     app_utils.delete_project(path)
     return jsonify({'result': 'success'})
 
