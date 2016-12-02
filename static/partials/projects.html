@@ -31,8 +31,8 @@
       <div class="panel panel-default" ng-repeat="prjs in project_names">
         <div class="panel-heading">
            <h3 class="panel-title pull-left">{{prjs}}</h3>
-            <button class="btn btn-default pull-right">Edit</button>
-            <button class="btn btn-default pull-right">Delete</button>
+            <button class="btn btn-default pull-right" data-ng-click="DeleteProject(prjs)">Delete</button>
+            <button class="btn btn-default pull-right" data-ng-click="ViewProject(prjs)">View</button>
             <div class="clearfix"></div>
         </div>
         <div class="panel-body">Project #1 description</div>

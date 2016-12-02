@@ -89,6 +89,20 @@ flowControllers.controller('ProjectsController',['$scope', '$location', '$http',
     });
   }
 
+  $scope.DeleteProject = function(project_to_delete){
+    $log.log("Removing Project " + project_to_delete);
+    $http.post('/api/deleteProject', {"project_to_delete":project_to_delete}).success(function(results) {
+      $log.log("Success!");
+      $log.log(results);
+      $location.path('/projects');
+    }).error(function(error) {
+      $log.log("there is an error deleting the project! :(")
+       $log.log(error);
+    });
+  }
+ // <button class="btn btn-default pull-right" data-ng-click="DeleteProject(prjs)">Delete</button>
+ //           <button class="btn btn-default pull-right" data-ng-click="ViewProject(prjs)">View</button>
+
 }]);
 ////////////////////////////////
 //// Controller for creating an account in ////
