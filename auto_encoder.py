@@ -126,6 +126,7 @@ class AutoEncoder:
         self._input_data = tf.placeholder(tf.float32, [None, n_features], name=self.name+'_x-input')
         self._output_data = tf.placeholder(tf.float32, [None, n_features], name=self.name+'y-input')
         self._input_labels = tf.placeholder(tf.float32)
+        #remember, place holders also not to run through the init
 
     def _create_variables(self, n_features):
         self.Wi = tf.Variable(tf.random_uniform((n_features,self.hidden_size),-1.0/math.sqrt(n_features),1.0/math.sqrt(n_features)),name=self.name+'_enc-wi')
@@ -135,6 +136,8 @@ class AutoEncoder:
         else:
             self.Wo = tf.Variable(tf.random_uniform((self.hidden_size,n_features),-1.0/math.sqrt(self.hidden_size),1.0/math.sqrt(self.hidden_size)),name=self.name+'_enc-wo')
         self.bo = tf.Variable(tf.zeros([n_features]),name=self.name+'_enc-bo')
+        # if bo DOES NOT converge when using tied
+        # weights then the user is dumb as shit.
 
     def _create_pre_train_encode_layer(self):
         with tf.name_scope(self.name+"pretrain_encoder"):

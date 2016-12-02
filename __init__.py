@@ -115,6 +115,12 @@ def register():
 def GETcurrentProject():
     return session['current_project']
 
+@app.route('/api/setCurrentProject', methods=['POST'])
+def SETcurrentProject():
+    json_data = request.json
+    session['current_project'] = json_data["project_name"]
+    return jsonify({'result':True})
+
 @app.route('/api/login', methods=['POST'])
 def login():
     json_data = request.json

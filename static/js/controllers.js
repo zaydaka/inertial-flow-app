@@ -15,45 +15,41 @@ flowControllers.controller('MyProjectController', ['$scope', '$location', '$http
  function($scope, $location, $http, $log, $timeout, $AuthService) {
 
   $scope.projectName = '';
-
+  $scope.editProjectDescription = true;
   $scope.getCurrentProject = function(){
+    $scope.editProjectDescription = true;
     $http.get('/api/currentProject').success(function(prj_name) {
+      $log.log("Project name = " + prj_name);
       if(prj_name!="None"){
-        $scope.projectName - prj_name;
+        $scope.projectName = prj_name;
       }
     }).error(function(error) {
       $log.log("there is an error getting the current project name :(");
       $log.log(error);
     });
-  }
+  };
 
+  $scope.editName = function(){
+    if($scope.editProjectDescription){
+      $scope.editProjectDescription = false;
+    }else{
+      $scope.editProjectDescription = true;
+    }
+    $log.log("disabled = " + $scope.editProjectDescription);
+  };
   $scope.getJSONFiles = function() {
-
-
-      // get the JSON file 
-      //$scope.checked_json_files = null
       $scope.json_files = null;
       $scope.checked_json_files = [];
-      //$scope.user.json_files = null
       $log.log("in run of getting files");
-
-      // fire the API request
       $http.get('/api/getJSONFiles').
         success(function(results) {
           $log.log(results);
-          //$scope.json_files = []
-          //for(var i = 0, size = results.length; i < size ; i++){
-          //  $scope.json_files.push({file_name:results[i],checked:false})
-          //}
-
           $scope.json_files = results;
-          //getNetworkResults(results); 
         }).
         error(function(error) {
           $log.log("there is an error :(");
           $log.log(error);
         });
-
   };
 
 }]);
@@ -101,8 +97,18 @@ flowControllers.controller('ProjectsController',['$scope', '$location', '$http',
        $log.log(error);
     });
   }
- // <button class="btn btn-default pull-right" data-ng-click="DeleteProject(prjs)">Delete</button>
- //           <button class="btn btn-default pull-right" data-ng-click="ViewProject(prjs)">View</button>
+ 
+  $scope.ViewProject = function(project_to_view){
+    $http.post('/api/setCurrentProject', {"project_name":project_to_view}).success(function(results) {
+      $log.log("Success!");
+      $log.log(results);
+      $location.path('/project');
+      $scope.getUserProjects();
+    }).error(function(error) {
+      $log.log("there is an error viewing the project! :(")
+       $log.log(error);
+    });
+  }
 
 }]);
 ////////////////////////////////

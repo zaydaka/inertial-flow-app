@@ -1,5 +1,5 @@
 
-<div class="container-fluid text-left" ng-controller="MyProjectController" ng-init="getUserProjects()">
+<div class="container-fluid text-left" ng-controller="MyProjectController" ng-init="getCurrentProject()">
   <h1> Projects: {{ projectName }} </h1>
   <br>
 
@@ -9,14 +9,21 @@
       <h3>Your Projects</h3>
       <div class="panel panel-default">
         <div class="panel-heading">
-           <h3 class="panel-title pull-left">Project #1</h3>
+           <h3 class="panel-title pull-left">{{projectName}}</h3>
             <button class="btn btn-default pull-right">Edit</button>
             <button class="btn btn-default pull-right">Delete</button>
             <div class="clearfix"></div>
         </div>
         <div class="panel-body">Project #1 description</div>
       </div>
+<input type="text" class="form-control" id="name2" value="Skipper" ng-readonly="editProjectDescription">
 
+<div class="input-group-addon">
+<button class = "btn btn-default" type="submit" data-ng-click="editName()">
+                       <span class="glyphicon glyphicon-pencil" ></span>
+                    </button>
+  
+</div>
       
     </div>
 
